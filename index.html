@@ -1,9 +1,202 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>?</title>
-    </head>
-    <body>
-        <span>Yowza, that*s a lot of files. Try uploading fewer than 100 at a time.</span>
-    </body>
+<html lang="en">
+	<head>
+		<title>Pinkiephorus - Loading...</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Pinkiephorus is a JavaScript compiler for Scratch 3, 2, and 1 projects.">
+		<link rel="icon" href="favicon.ico" type="image/icon" sizes="90x90">
+		<link rel="stylesheet" type="text/css" href="phosphorus.css">
+		<link rel="stylesheet" type="text/css" href="index.css">
+	</head>
+	<body>
+		<div id="stageS" style="display: none;">
+			<ul id="menuS">
+				<li>
+					<a href="#">File</a>
+					<ul>
+						<li><a href="#" id="loadprojectfile">Open Project From File</a></li>
+						<li><a href="#" id="loadprojectfid">Open Project By ID</a></li>
+						<li>
+							<a href="#" class="dropdown">Examples
+								<select id="examples">
+									<option value="" style="display: none;"></option>
+								</select>
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">View</a>
+					<ul id="sizeStageS"> 
+						<li><a href="#">50%</a></li>
+						<li><a href="#">70%</a></li>
+						<li><a href="#">100%</a></li>
+						<li><a href="#">150%</a></li>
+						<li><a href="#" id="pinkiephorus-Openfullscreen">Open fullscreen</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Control</a>
+					<ul>
+						<li><a href="#" id="pinkiephorus-greenflag">Click Flag</a></li>
+						<li><a href="#" id="pinkiephorus-stop">Stop</a></li>
+					</ul>
+				</li>
+				<li><a href="about.html">About</a></li>
+			</ul>
+			<div class="container">
+				<div id="pinkiephorus-stage"></div>
+				<p id="progressS" style="position: absolute;"></p>	
+				<div id="optionS" style="display: none;">
+					<h2 style="padding: 0px 0px;">Volume: <input type="range" min="0" max="100"></h2>
+				</div>
+				<div id="overlay" style="display: none;">
+					<div>Sprite Clone Count: <span id="C_1"></span></div>
+					<div>FPS: <span id="C_2"></span></div>
+					<div>Days since: <span id="C_5"></span></div>
+					<div>Timer: <span id="C_3"></span></div>
+					<div>Mouse Pressed: <span id="C_4"></span></div>
+					<div>step: <span id="C_6"></span></div>
+				</div>
+			</div>
+			<noscript>
+				<p><b>This browser is not supported.</b> Please upgrade to Mozilla Firefox, Google Chrome, or Microsoft Edge.</p>
+			</noscript>
+		</div>
+		<div id="loadingS">Loading..</div>
+		<script src="fonts/fonts.js"></script>
+		<script src="soundbank/soundbank.js"></script>
+		<script src="lib/scratch-sb1-converter.js"></script>
+		<script src="lib/jszip.js"></script>
+		<script src="lib/purify.js"></script>
+		<script src="phosphorus.dist.js"></script>
+		<script src="common.js"></script>
+		<script>
+			if (!window.P || !window.P.io) {
+				document.getElementById('loadingS').innerHTML = '<p><b>This browser is not supported.</b> Please upgrade to Mozilla Firefox, Google Chrome, or Microsoft Edge.</p>'
+			}
+		</script>
+		<script>
+			(function () {
+				'use strict';
+				document.getElementById('loadingS').style = 'display: none;';
+				document.getElementById('stageS').style = '';
+				var playerArea = document.getElementById('pinkiephorus-stage');
+				var player = new P.player.Player();
+				var loadprojectfile = document.getElementById('loadprojectfile');
+				var loadprojectfid = document.getElementById('loadprojectfid');
+				var greenflag = document.getElementById('pinkiephorus-greenflag');
+				var stop = document.getElementById('pinkiephorus-stop');
+				var sizeStageS = document.getElementById('sizeStageS');
+				var examples = document.querySelector('#examples');
+				var pinkiephorusOpenfullscreen = document.getElementById('pinkiephorus-Openfullscreen');
+				window.player = player;
+				document.title = 'Pinkiephorus for Scratch 3';
+				(function(){
+					var xhr = new XMLHttpRequest();
+					xhr.onload = function (e) {
+						var listStudio = P.IO.parseJSONish(e.target.response).targets[0].lists['a.8qnh-kt9g$tZf/wzjM'][1];
+						for (var i = 0; i < listStudio.length; i += 2) {
+							var OPTIONish = document.createElement('option');
+							if (listStudio[i] == 'null') {
+								OPTIONish.setAttribute('disabled', 'disabled');
+								OPTIONish.innerHTML = '###### ' + listStudio[i + 1] + ' ######';
+							} else {
+								OPTIONish.value = listStudio[i];
+								OPTIONish.innerHTML = listStudio[i + 1];
+							}
+							examples.appendChild(OPTIONish);
+						}
+					}
+					xhr.open("GET", "https://projects.scratch.mit.edu/610191168", true);
+					xhr.send();
+				}())
+				var initialTitle = document.title;
+				function resetTitle() {
+					document.title = initialTitle;
+				}
+				function setTitleToProjectTitle(id) {
+					player.getProjectMeta().load()
+						.then(function(meta) {
+							var title = meta.getTitle();
+							if (title) {
+								player.projectTitle = title;
+								document.title = title + ' - pinkiephoru';
+							} else {
+								resetTitle();
+							}
+						});
+				}
+				function loadProjectFile(file) {
+					var extension = file.name.split('.').pop();
+					player.loadProjectFromFile(file);
+					setTitleToProjectTitle();
+				}
+				function loadProjectId(id) {
+					player.loadProjectById(id);
+					setTitleToProjectTitle();
+				}
+				player.setOptions(Common.playerOptions);
+				examples.addEventListener('change', function() {
+					if (examples.value) {
+						loadProjectId(examples.value);
+					}
+				});
+				playerArea.appendChild(player.root);
+				function URLsearchParams(name, isD) {
+					return new URL(window.location.href).searchParams.get(name);
+				}
+				sizeStageS.children[0].children[0].onclick = function () {
+					player.setZoom(0.5);
+				}
+				sizeStageS.children[1].children[0].onclick = function () {
+					player.setZoom(0.7);
+				}
+				sizeStageS.children[2].children[0].onclick = function () {
+					player.setZoom(1);
+				}
+				sizeStageS.children[3].children[0].onclick = function () {
+					player.setZoom(1.5);
+				}
+				greenflag.onclick = function () {
+					player.triggerGreenFlag();
+				}
+				stop.onclick = function () {
+					player.stopAll();
+				}
+				pinkiephorusOpenfullscreen.onclick = function () {
+					player.enterFullscreen();
+				}
+				loadprojectfid.onclick = function () {
+					var id = prompt("Enter your id", "315871183");
+					if (id != null) {
+						loadProjectId(id);
+					}
+				}
+				loadprojectfile.onclick = function () {
+					var sa = document.createElement('input');
+					sa.type = 'file';
+					sa.accept = '.sb,.sb2,.sb3,.json';
+					sa.addEventListener('change', function (e) {
+						var file = e.target.files[0];
+						loadProjectFile(file);
+					}, false);
+					sa.click();
+				}
+				if (URLsearchParams('id',true)) loadProjectId(URLsearchParams('id',true));
+				function SupdateFullscreen() {
+					if (window.innerHeight < 440) {
+						player.setZoom(window.innerHeight /  440); 
+					} else {
+						player.setZoom(1); 
+					}
+				}
+				SupdateFullscreen();
+				window.addEventListener('resize', () => {
+					SupdateFullscreen();
+				});
+			}())
+		</script>
+	</body>
 </html>
