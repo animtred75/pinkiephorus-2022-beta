@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>About</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Pinkiephorus is a JavaScript compiler for Scratch 3, 2, and 1 projects.">
+		<link rel="icon" href="favicon.ico" type="image/icon" sizes="90x90">
+		<link rel="stylesheet" type="text/css" href="phosphorus.css">
+		<style>
+			#scratch-stage{
+				border: 5px solid;
+				display: inline-block;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>The projects</h1>
+		<div id="scratch-stage"></div>
+		<script src="fonts/fonts.js"></script>
+		<script src="soundbank/soundbank.js"></script>
+		<script src="lib/scratch-sb1-converter.js"></script>
+		<script src="lib/jszip.js"></script>
+		<script src="lib/purify.js"></script>
+		<script src="phosphorus.dist.js"></script>
+		<script src="common.js"></script>
+		<script>
+			// https://assets.scratch.mit.edu/internalapi/asset/2be40d7a5bb0dace0c4aa9e2d7c8a0d2.wav/get
+			var player1 = new P.player.Player();
+			var playerArea = document.getElementById('scratch-stage');
+			playerArea.appendChild(player1.root);
+			//player1.loadProjectById(616879577);
+			player1.loadProjectById(577623992);
+			player1.onload.subscribe(function(){
+				playerArea.style.display = 'none';
+			})
+			player1.setZoom(0.7);
+			player1.options.autoplay = true;
+		</script>
+	</body>
+</html>

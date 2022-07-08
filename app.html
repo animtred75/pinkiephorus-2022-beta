@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Pinkiephorus</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Pinkiephorus is a JavaScript compiler for Scratch 3, 2, and 1 projects.">
+		<link rel="icon" href="favicon.ico" type="image/icon" sizes="90x90">
+		<link rel="stylesheet" type="text/css" href="phosphorus.css">
+		<style>
+			@font-face {
+				font-family: 'mlp';
+				font-style: normal;
+				font-weight: 400;
+				src: url('font.otf');
+			}
+			body{
+				font-family: 'mlp';
+				margin: 0px;
+				top: 0px;
+				left: 0px;
+				overflow: hidden;
+				background: rgb(0, 0, 0);
+			}
+			#pinkiephorus-stage {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+				margin: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="pinkiephorus-stage"></div>
+		<script src="fonts/fonts.js"></script>
+		<script src="soundbank/soundbank.js"></script>
+		<script src="lib/scratch-sb1-converter.js"></script>
+		<script src="lib/jszip.js"></script>
+		<script src="lib/purify.js"></script>
+		<script src="phosphorus.dist.js"></script>
+		<script src="common.js"></script>
+		<script>
+			(function () {
+				'use strict';
+				var playerArea = document.getElementById('pinkiephorus-stage');
+				var player = new P.player.Player();
+				window.player = player;
+				player.setOptions(Common.playerOptions)
+				var clicktoplay = document.getElementById('clicktoplay');
+				function URLsearchParams(name,isD) {
+					return new URL(window.location.href).searchParams.get(name);
+				}
+				playerArea.appendChild(player.root);
+				var initialTitle = document.title;
+				function resetTitle() {
+					document.title = initialTitle;
+				}
+				function setTitleToProjectTitle(id) {
+					player.getProjectMeta().load()
+						.then(function(meta) {
+							var title = meta.getTitle();
+							if (title) {
+								player.projectTitle = title;
+								document.title = title;
+							} else {
+								resetTitle();
+							}
+						});
+				}
+				function loadProjectFile(file) {
+					var extension = file.name.split('.').pop();
+					if (!['sb', 'sb2', 'sb3'].includes(extension)) {
+						
+					}
+					player.loadProjectFromFile(file);
+					setTitleToProjectTitle();
+				}
+				function loadProjectId(id) {
+					player.loadProjectById(id);
+					setTitleToProjectTitle();
+				}
+				if (URLsearchParams('url',false) !== null) {
+					player.loadProjectURL(URLsearchParams('url',false))
+				} else {
+					loadProjectId((URLsearchParams('id',true) || 17088932))
+				}
+				function SupdateFullscreen() {
+					if (((window.innerHeight /  360) - (window.innerWidth /  480)) > 0) {
+						player.setZoom((window.innerWidth /  480));
+					} else {
+						player.setZoom((window.innerHeight /  360));
+					}
+				}
+				SupdateFullscreen()
+				window.addEventListener('resize', () => {
+					SupdateFullscreen()
+				});
+			}())
+		</script>
+	</body>
+</html>

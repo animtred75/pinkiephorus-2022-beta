@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pinkiephorus Examples</title>
+		<style>
+			@font-face {
+				font-family: 'mlp';
+				font-style: normal;
+				font-weight: 400;
+				src: url('font.otf');
+			}
+			body{
+				font-family: 'mlp';
+			}
+			#logo{
+				font-size: 35px;
+				text-align: center;
+				border: 3px solid #ccc;
+				padding: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="logo">Examples of Scratch</div>
+		<div id="examplesList"></div>
+		<script>
+			var examplesList = [{
+				"type":"folder",
+				"name":"Scratch",
+				"body":[{
+					"type":"file",
+					"name":"104.sb",
+					"body":"104",
+				}],
+			},{
+				"type":"folder",
+				"name":"AnimTred",
+				"body":[{
+					"type":"folder",
+					"name":"No Project Data",
+					"body":[{
+						"type":"file",
+						"name":"NoProjectData1.sb3",
+						"body":"104",
+					},{
+						"type":"file",
+						"name":"NoProjectData2.sb3",
+						"body":"104",
+					},{
+						"type":"file",
+						"name":"NoProjectData3.sb3",
+						"body":"104",
+					},{
+						"type":"file",
+						"name":"NoProjectData4.sb3",
+						"body":"104",
+					},{
+						"type":"file",
+						"name":"NoProjectData5.sb3",
+						"body":"104",
+					},{
+						"type":"file",
+						"name":"NoProjectData6.sb3",
+						"body":"104",
+					}],
+				}],
+			}]
+			class ExampleRoot {
+				constructor(stage) {
+					this.root = document.createElement('ul');
+					this.root.className = 'stage';
+				}
+			}
+			class folder {
+				constructor(name,body) {
+					this.name = name;
+					this.type = 'folder';
+					this.body = body;
+					this.li = document.createElement('li');
+					this.a = document.createElement('a');
+					this.a.href = '#';
+					this.a.innerHTML = name;
+					this.li.appendChild(this.a);
+					this.ul = document.createElement('ul');
+					this.ul.style.display = 'none';
+					this.a.origimGS = this.ul;
+					this.a.onclick = function(){
+						if (this.origimGS.style.display) {
+							this.origimGS.style = '';
+						} else {
+							this.origimGS.style.display = 'none';
+						}
+					}
+					this.li.appendChild(this.ul);
+				}
+			}
+			class file {
+				constructor(name,id) {
+					this.name = name;
+					this.type = 'file';
+					this.body = id;
+					this.li = document.createElement('li');
+					this.a = document.createElement('a');
+					this.a.href = 'app.html?id=' + id + '&title=' + encodeURI(name);
+					this.a.innerHTML = name;
+					this.li.appendChild(this.a);
+				}
+			}
+			class ExamplesHS {
+				constructor() {
+					this.examplesList = null;
+					this.root = document.createElement('div');
+					this.root.className = 'root';
+				}
+				parse(data){
+					this.examplesList = new ExampleRoot();
+					var listf = [];
+					var setP = function (elem,fss) {
+						var setFolder = function (folderList,elem) {
+							for (var i = 0; i < folderList.body.length; i++) {
+								if (folderList.body[i].type == 'folder') {
+									setFolder(folderList.body[i],folderList.ul);
+								} else if (folderList.body[i].type == 'file') {
+									folderList.ul.appendChild(folderList.body[i].li);
+								}
+							}
+							elem.appendChild(folderList.li);
+						}
+						for (var i = 0; i < elem.length; i++) {
+							if (elem[i].type == 'folder') {
+								setFolder(elem[i],fss);
+							} else if (elem[i].type == 'file') {
+								fss.appendChild(elem[i].li);
+							}
+						}
+					}
+					var addFile = function (files) {
+						return new file(files.name,files.body);
+					}
+					var addFolder = function (folderList) {
+						var list1 = [];
+						for (var i = 0; i < folderList.body.length; i++) {
+							if (folderList.body[i].type == 'folder') {
+								list1.push(addFolder(folderList.body[i]));
+							} else if (folderList.body[i].type == 'file') {
+								list1.push(addFile(folderList.body[i]));
+							}
+						}
+						return new folder(folderList.name,list1);
+					}
+					for (var i = 0; i < data.length; i++) {
+						if (data[i].type == 'folder') {
+							listf.push(addFolder(data[i]));
+						} else if (data[i].type == 'file') {
+							listf.push(addFile(data[i]));
+						}
+					}
+					setP(listf,this.examplesList.root);
+					console.log(listf)
+					this.root.appendChild(this.examplesList.root)
+				}
+			}
+			var examplesS = new ExamplesHS();
+			document.getElementById('examplesList').appendChild(examplesS.root);
+			examplesS.parse(examplesList)
+			console.log(examplesS)
+		</script>
+	</body>
+</html>

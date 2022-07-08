@@ -1,0 +1,100 @@
+@font-face {
+	font-family: 'mlp';
+	font-style: normal;
+	font-weight: 400;
+	src: url('font.otf');
+}
+body{
+	font-family: mlp;
+	image-rendering: pixelated;
+	overflow: hidden;
+	margin: 0;
+}
+.dark {
+	background-color: #111;
+	color: #ddd;
+	scrollbar-color: #444 #222;
+}
+#loadingS {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 45px;
+	transform: translate(-50%,-50%);
+}
+.container {
+	position: relative;
+}
+#pinkiephorus-stage{
+	border: 4px solid #ccc;
+}
+.dropdown {
+	display: inline-block;
+	position: relative;
+}
+.dropdown > select {
+	-webkit-appearance: none;
+	font: inherit;
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10000000000000;
+}
+#stageS{
+	position: fixed;
+	top: 51%;
+	left: 50%;
+	transform: translate(-50%,-49%);
+}
+#menuS{
+	position: absolute;
+	top: -35px;
+	left: -38px;
+	z-index: 1;
+}
+#menuS a{
+	text-decoration: none;
+	color: #000;
+}
+li{
+	list-style: none;
+}
+#menuS > li a{
+	transition: 0.15s;
+	background: #fff;
+	margin: 5px;
+}
+#menuS > li {
+	float: left;
+}
+#menuS > li a:hover{
+	transition: 0.15s;
+	background: #ccc;
+}
+#menuS li ul{
+	display: none;
+	position: absolute;
+}
+#menuS > li:hover > ul{
+	display: block;
+}
+#menuS > li ul li{
+	position: relative;
+	width: 660px;
+	right: 40px;
+}
+#menuS > li ul li ul{
+	display: none;
+	position: absolute;
+}
+#menuS > li ul li:hover > ul{
+	display: block;
+}
+#menuS > li ul li ul li{
+	width: 660px;
+	right: 10px;
+}

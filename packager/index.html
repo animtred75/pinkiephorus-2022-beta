@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>HTML Packager</title>
+		<link rel="icon" href="../favicon.ico" type="image/icon" sizes="90x90">
+		<style>
+			body{
+				font-family: sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>HTML Packager</h1>
+		<p>The HTML packager allows you to generate an HTML file for a Scratch project.</p>
+		<noscript>
+			<b>This page requires JavaScript to work properly.</b>
+		</noscript>
+		<div>
+			<label>Project Source</label>
+			<label><input name="select-project-type" type="radio" value="id" id="SPIDsh" checked="1">Project ID</label><label><input name="select-project-type" id="SPFilesh" type="radio" value="file">Project File</label>
+			<br>
+			<div id="ddd1">
+				<label>Project ID</label>
+				<input type="text" value="407397484" name="" id="ProjectIDsh">
+			</div>
+			<div id="ddd2" hidden="">
+				<label>Project File</label>
+				<input type="file" accept=".sb,.sb2,.sb3,.json" name="" id="ProjectFilesh">
+			</div>
+			<section>
+				<button id="loadProject-html">Load Project</button>
+				<br>
+				<label id="loadingProject"></label>
+			</section>
+			<div id="optionS" style="display: none;">
+				<div>
+					<h2>Option for Runtime</h2>
+					<div>
+						<label><input type="checkbox" id="checkboxTurboMode"> Turbo Mode</label>
+						<br>
+						<label>FPS <input type="number" value="30" min="1" max="240" id="checkboxFPS"></label>
+					</div>
+					<h2>Option for Player</h2>
+					<div>
+						<label>Page title <input type="text" id="checkboxPageTitle"></label>
+						<br>
+						<label>Page icon <input type="file" id="checkboxPageIcon" accept=".png,.jpg,.jpeg,.ico,.icon"></label>
+						<br>
+						<label>Use WebGL <input type="checkbox" id="checkboxWebgl"></label>
+						<br>
+						<label>Show Controls <input type="checkbox" id="checkboxShowControls"></label>
+						<br>
+						<label>AutoPlay <input type="checkbox" id="checkboxAutoPlay"></label>
+					</div>
+				</div>
+				<section>
+					<button id="Package-html">Package</button>
+					<br>
+					<label id="PackageLoaded"></label>
+				</section>
+			</div>
+		</div>
+		<script src="jszip.js"></script>
+		<script src="loader.js"></script>
+		<script src="packer.js"></script>
+		<script>
+			const fileLoader = new Packer.FileLoader();
+			fileLoader.files = [
+				{ type: 'script', src: 'fonts/fonts.js', },
+				{ type: 'script', src: 'soundbank/soundbank.js', },
+				{ type: 'style', src: 'phosphorus.css', inlineSources: ['icons/click-to-play.svg', 'font.otf']},
+				{ type: 'script', src: 'lib/scratch-sb1-converter.js', },
+				{ type: 'script', src: 'lib/jszip.js', },
+				{ type: 'script', src: 'lib/purify.js', },
+				{ type: 'script', src: 'phosphorus.dist.js', inlineSources: [
+					'icons.svg',
+					'icons/click-to-play.svg',
+					'assets/3dot.svg',
+					'assets/flag.svg',
+					'assets/fulscreenclose.svg',
+					'assets/fulscreenopen.svg',
+					'assets/pause.svg',
+					'assets/resume.svg',
+					'assets/stop.svg',
+				] },
+			];
+		</script>
+		<script>
+			var projectBlob = null;
+			var nb = 0;
+			document.getElementById('SPFilesh').onclick = () => {
+				document.getElementById('ddd2').removeAttribute('hidden');
+				document.getElementById('ddd1').setAttribute('hidden', 'hidden');
+				nb = 1;
+			}
+			document.getElementById('SPIDsh').onclick = () => {
+				document.getElementById('ddd1').removeAttribute('hidden');
+				document.getElementById('ddd2').setAttribute('hidden', 'hidden');
+				nb = 0;
+			}
+			var sa = document.getElementById('ProjectFilesh');
+			sa.addEventListener('change', function (e) {
+				var file = e.target.files[0];
+				if (!file) {
+					return;
+				}
+				projectBlob = file;
+			}, false);
+			SBDL.progressCallback = function (c) {
+				document.getElementById('loadingProject').innerHTML = c;
+			}
+			document.getElementById('loadProject-html').onclick = async () => {
+				if (nb == 0) {
+					projectBlob = null;
+					try {
+						const xhr = new XMLHttpRequest();
+						xhr.open('GET', 'https://trampoline.turbowarp.org/proxy/projects/' + document.getElementById('ProjectIDsh').value);
+						xhr.responseType = 'json';
+						xhr.onload = () => {
+							if (xhr.status == 200) document.getElementById('checkboxPageTitle').value = xhr.response.title;
+						};
+						xhr.send();
+					} catch (e) {
+					}
+					document.getElementById('loadProject-html').setAttribute('disabled', '');
+					projectBlob = await SBDL.loadProject(document.getElementById('ProjectIDsh').value);
+				}
+				document.getElementById('loadingProject').style.display = 'none';
+				document.getElementById('loadProject-html').removeAttribute('disabled');
+				document.getElementById('optionS').style = '';
+			}
+			document.getElementById('Package-html').onclick = async () => {
+				document.getElementById('PackageLoaded').innerHTML = 'loading scripts';
+				const packager = new Packer.Packager({ fileLoader });
+				packager.projectData = await SBDL.IOreader(projectBlob, 'dataurl');
+				packager.projectType = 'sb';
+				packager.playerOptions.turbo = document.getElementById('checkboxTurboMode').checked;
+				packager.playerOptions.webgl = document.getElementById('checkboxWebgl').checked;
+				packager.playerOptions.controls = document.getElementById('checkboxShowControls').checked;
+				packager.playerOptions.title = document.getElementById('checkboxPageTitle').value;
+				packager.playerOptions.fps = document.getElementById('checkboxFPS').value;
+				packager.playerOptions.autoplay = document.getElementById('checkboxAutoPlay').checked;
+				let filename = 'project';
+       			let filetype = 'html';
+				let result = await packager.run();
+				var aDownload = document.createElement('a');
+				aDownload.href = URL.createObjectURL(new Blob([result]));
+				aDownload.download = 'project.html';
+				aDownload.click();
+				document.getElementById('PackageLoaded').innerHTML = 'Done';
+			}
+		</script>
+	</body>
+</html>

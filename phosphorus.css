@@ -1,0 +1,675 @@
+@font-face {
+
+  font-family: 'mlp';
+
+  font-style: normal;
+
+  font-weight: 400;
+
+  src: url('font.otf');
+
+}
+
+.forkphorus-root {
+
+  position: relative;
+
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+
+  background-color: #fff;
+
+  color: black;
+
+  overflow: hidden;
+
+  user-select: none;
+
+}
+
+.forkphorus-player-root {
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-color: #fff;
+
+  font-family: 'mlp';
+
+}
+
+.forkphorus-player-root .player-stage {
+
+  position: absolute;
+
+}
+
+.forkphorus-player-root .player-loading {
+
+  position: absolute;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: #fff;
+
+}
+
+.forkphorus-player-root .player-loading .loadingF {
+
+  position: absolute;
+
+  top: 47%;
+
+  left: 50%;
+
+  transform: translate(-50%,-53%);
+
+  width: 100%;
+
+  height: 20%;
+
+}
+
+.forkphorus-player-root .player-loading .ClogoF {
+
+  position: absolute;
+
+  bottom: 2%;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-size: 1.6em;
+
+}
+
+.forkphorus-player-root .player-loading .loadingF .logoS {
+
+  text-align: center;
+
+  font-size: 3em;
+
+  color: #e2f;
+
+}
+
+.forkphorus-player-root .player-loading .loadingF .progress {
+
+  border: 0.25em solid #000;
+
+  width: 80%;
+
+  height: 10%;
+
+  margin: 0 auto;
+
+}
+
+.forkphorus-player-root .player-loading .loadingF .progress .progress-bar {
+
+  background: #0f0;
+
+  height: 100%;
+
+  transition: .3s;
+
+}
+
+.forkphorus-player-root .player-control .player-button_player-3dot{
+
+  display: inline-block;
+
+  position: relative;
+
+}
+
+.forkphorus-player-root .player-control .player-button_player-3dot img{
+
+  width: 20px;
+
+  height: 25px;
+
+}
+
+.forkphorus-player-root .player-control .player-button_player-3dot .z3dotExamples{
+
+  position: absolute;
+
+}
+
+.forkphorus-player-root .player-control .player-button_player-3dot > select {
+
+  -webkit-appearance: none;
+
+	font: inherit;
+
+	position: absolute;
+
+	opacity: 0;
+
+	cursor: pointer;
+
+	top: 0;
+
+	left: 0;
+
+	width: 100%;
+
+	height: 100%;
+
+	z-index: 10000000000;
+
+}
+
+.forkphorus-player-root .player-control {
+
+  position: absolute;
+
+  background:rgba(0,0,0,0.5);
+
+  padding: 2px 6px;
+
+  border-radius: 0px 0px 15px 0px;
+
+}
+
+.forkphorus-player-root .player-Statsfornerds {
+
+  position: absolute;
+
+  margin: 40px 5px;
+
+  width: 200px;
+
+  font-size: 13px;
+
+  background:rgba(0,0,0,0.7);
+
+  padding: 5px 5px;
+
+  color: #fff;
+
+}
+
+.forkphorus-player-root .player-control > * {
+
+  width: 20px;
+
+  height: 20px;
+
+  margin: 3px;
+
+  cursor: pointer;
+
+  pointer-events: all;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+.forkphorus-root > * {
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+}
+
+.player-click-to-play-container {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  cursor: pointer;
+
+  pointer-events: all;
+
+  background-color: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+.player-click-to-play-icon {
+
+  width: 10em;
+
+  height: 10em;
+
+  background-image: url(icons/click-to-play.svg);
+
+  background-size: 100% 100%;
+
+}
+
+/* flag */
+
+.player-Menu-Vertical {
+
+  background: #fff;
+
+  z-index: 2;
+
+}
+
+
+
+.player-Menu-Vertical > div {
+
+  padding: 5px;
+
+  background: #fff;
+
+}
+
+
+
+.player-Menu-Vertical > div:hover {
+
+  background: #ccc;
+
+}
+
+
+
+/* Scratch 3 Variable Watchers */
+
+.s3-watcher-container {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  color: rgb(87, 94, 117);
+
+  border: 0.1em solid rgba(0, 0, 0, 0.15);
+
+  border-radius: 0.25em;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: hsl(215, 100%, 95%);
+
+  pointer-events: auto;
+
+  line-height: 1.25;
+
+}
+
+.s3-watcher-container > * {
+
+  font-size: 1.2em;
+
+}
+
+.s3-watcher-row {
+
+  display: flex;
+
+  flex-direction: row;
+
+}
+
+.s3-watcher-label {
+
+  font-weight: bold;
+
+  text-align: center;
+
+  margin: 0 5px;
+
+}
+
+.s3-watcher-value {
+
+  color: white;
+
+  text-align: center;
+
+}
+
+.s3-watcher-container .s3-watcher-value {
+
+  /* fallback color */
+
+  background-color: rgb(15, 189, 140);
+
+}
+
+.s3-watcher-container[data-opcode^="data_"] .s3-watcher-value {
+
+  background-color: rgb(255, 140, 26);
+
+}
+
+.s3-watcher-container[data-opcode^="sensing_"] .s3-watcher-value {
+
+  background-color: rgb(92, 177, 214);
+
+}
+
+.s3-watcher-container[data-opcode^="motion_"] .s3-watcher-value {
+
+  background-color: rgb(76, 151, 255);
+
+}
+
+.s3-watcher-container[data-opcode^="looks_"] .s3-watcher-value {
+
+  background-color: rgb(153, 102, 255);
+
+}
+
+.s3-watcher-container[data-opcode^="sound_"] .s3-watcher-value {
+
+  background-color: rgb(207, 99, 207);
+
+}
+
+/* Normal watcher */
+
+.s3-watcher-container-normal {
+
+  padding: 3px;
+
+}
+
+.s3-watcher-row-normal .s3-watcher-value {
+
+  border-radius: 0.25em;
+
+  padding: 0 0.2px;
+
+  margin: 0 0.5em;
+
+  min-width: 4em;
+
+}
+
+/* Slider Watcher (uses normal) */
+
+.s3-watcher-row-slider input[type="range"] {
+
+  margin: 0;
+
+  width: 100%;
+
+}
+
+/* Large watcher */
+
+.s3-watcher-large .s3-watcher-value {
+
+  border-radius: inherit;
+
+  font-size: 1.6em;
+
+  min-height: 1.4em;
+
+  min-width: 3em;
+
+}
+
+
+
+/* Scratch 3 list watchers */
+
+.s3-list-container {
+
+  position: absolute;
+
+  color: rgb(87, 94, 117);
+
+  top: 0;
+
+  left: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background-color: hsla(215, 100%, 95%, 1);
+
+  border: 0.1em solid rgba(0, 0, 0, 0.15);
+
+  border-radius: 0.25em;
+
+  pointer-events: none;
+
+  line-height: 1.5;
+
+}
+
+.s3-list-content {
+
+  text-align: center;
+
+  width: 100%;
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  pointer-events: auto;
+
+  /* reset any scrollbar color changes */
+
+  scrollbar-color: auto;
+
+}
+
+.s3-list-content:empty::after {
+
+  content: "(empty)";
+
+  text-align: center;
+
+}
+
+.s3-list-rows {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow-x: hidden;
+
+  overflow-y: scroll;
+
+  contain: layout;
+
+}
+
+.s3-list-endpoint {
+
+  position: absolute;
+
+  width: 1px;
+
+  height: 1px;
+
+  will-change: transform;
+
+  contain: layout;
+
+}
+
+.s3-list-row {
+
+  position: absolute;
+
+  display: flex;
+
+  flex-direction: row;
+
+  width: 100%;
+
+  text-align: left;
+
+  align-items: center;
+
+  will-change: transform;
+
+  contain: layout;
+
+}
+
+.s3-list-index, .s3-list-value {
+
+  margin: 0 3px;
+
+}
+
+.s3-list-index {
+
+  font-weight: bold;
+
+  pointer-events: none;
+
+}
+
+.s3-list-value {
+
+  background-color: rgb(252, 102, 44);
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+
+  border-radius: 0.25em;
+
+  flex: 1;
+
+  color: #fff;
+
+  padding: 1px 5px;
+
+  min-height: 1.5em;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  user-select: text;
+
+  white-space: pre;
+
+}
+
+.s3-list-top-label, .s3-list-bottom-label {
+
+  padding: 3px;
+
+  text-align: center;
+
+  font-weight: bold;
+
+  background-color: #fff;
+
+}
+
+.s3-list-top-label {
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+
+}
+
+.s3-list-row, .s3-list-top-label, .s3-list-bottom-label {
+
+  font-size: 1.2em;
+
+}
+
+
+
+/* Cloud variable status */
+
+.phosphorus-cloud-status-indicator {
+
+  position: absolute;
+
+  bottom: 5%;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 5px;
+
+  font-size: 1.5em;
+
+  color: white;
+
+  background-color: rgba(0, 0, 0, 0.75);
+
+  backdrop-filter: blur(2px);
+
+  text-align: center;
+
+  z-index: 1;
+
+}
+
+.phosphorus-cloud-status-indicator.phosphorus-cloud-status-indicator-hidden {
+
+  opacity: 0;
+
+  transition: opacity 0.5s;
+
+  transition-delay: 1s;
+
+}
+
+
+
+/* Player Fullscreen */
+
+.forkphorus-player-root[fullscreen] {
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  background: #000;
+
+  height: 100%;
+
+  width: 100%;
+
+}
+
+.player-body-fullscreen {
+
+  background: #000;
+
+  overflow: hidden;
+
+}
